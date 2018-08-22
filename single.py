@@ -5,16 +5,16 @@ import matplotlib.pyplot as plt
 
 def main():
     #dimensions
-    d = 5
-    ff = 2/3
-    tline = 2.5
-    tslab = 1.5
-    tstep = 0.2
+    d = 4.681
+    ff = 0.6371
+    tline = 2.8206
+    tslab = 1.6668
+    tstep = 0.0865
 
-    g = ZCG((d, ff, tline, tslab, tstep), (8, 12, 2001), target = 10.4)
+    g = ZCG((d, ff, tline, tslab, tstep), (8, 12, 2001), target = 9.7)
     g.evaluate()
     print(g)
-    print("total trans:",(sum([t**2 for (wl, t) in g.trans])/len(g.trans))**(1/2))
+    print("RMS transmittance:",(sum([t**2 for (wl, t) in g.trans])/len(g.trans))**(1/2))
     plt.plot(*zip(*g.trans))
     plt.show()
 
