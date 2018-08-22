@@ -10,8 +10,10 @@ def main():
     tline = 2.8206
     tslab = 1.6668
     tstep = 0.0865
+    wavelengths = (8, 12, 2001)
+    target = 9.7
 
-    g = ZCG((d, ff, tline, tslab, tstep), (8, 12, 2001), target = 9.7)
+    g = ZCG((d, ff, tline, tslab, tstep), wavelengths, target)
     g.evaluate()
     print(g)
     print("RMS transmittance:",(sum([t**2 for (wl, t) in g.trans])/len(g.trans))**(1/2))

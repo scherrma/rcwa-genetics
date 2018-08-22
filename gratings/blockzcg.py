@@ -11,7 +11,7 @@ class BlockZCG(Grating): #2D block ZCG
     si_k = interp.interp1d(*zip(*[[((speed_of_light*10**6)/float(f)),n] for f,n in h.opencsv('materials/silicon_k.csv',1)]))
 
     def __init__(self, params, wavelengths, target):
-        Grating.__init__(self, params, wavelengths, target)
+        super().__init__(self, params, wavelengths, target)
         self.d, self.ff, self.tblocks, self.tslab = params
         self.labels = ['d','ff','tblocks', 'tslab']
     

@@ -7,6 +7,7 @@ from termcolor import colored
 
 def main():
     gencount = 100
+    gensize = 25
 
     #dimensions
     d = 5
@@ -14,15 +15,17 @@ def main():
     tline = 2.5
     tslab = 1.5
     tstep = 0.2
+    wavelengths = (8, 12, 2001)
+    target = 10.5
 
     thetime = lambda: str(dt.time(dt.now())).split('.')[0]
-    g0 = ZCG((d, ff, tline, tslab, tstep), (8, 12, 2001), target = 10.5)
+    g0 = ZCG((d, ff, tline, tslab, tstep), wavelengths, target)
     g0.evaluate()
     oldbest = g0
     genbest = list(zip(*g0.trans))
     print(colored("seed:", "cyan"), g0)
 
-    gen = Generation(25, g0)
+    gen = Generation(gensize, g0)
     for i in range(gencount): 
         genheader = thetime() + colored( " gen " + str(i), "cyan")
         gen.evaluate(progress_txt = genheader)

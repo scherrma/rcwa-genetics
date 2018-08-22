@@ -11,7 +11,7 @@ class HCG(Grating):
     si_k = interp.interp1d(*zip(*[[nu2lambda(float(f))*10**6,n] for (f, n) in h.opencsv('materials/silicon_k.csv',1)]))
 
     def __init__(self, params, wavelengths, target):
-        Grating.__init__(self, params, wavelengths, target)
+        super().__init__(self, params, wavelengths, target)
         self.d, self.ff, self.tline, self.tslab, self.tstep = params
         self.labels = ['d','ff','tline','tair','tstep']
         if self.tstep > self.tline:

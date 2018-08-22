@@ -13,7 +13,7 @@ class BiZCG(Grating):
     si_k = interp.interp1d(*zip(*[[nu2lambda(float(f))*10**6,n] for (f, n) in h.opencsv('materials/silicon_k.csv',1)]))
 
     def __init__(self, params, wavelengths, target, angle = 5):
-        Grating.__init__(self, params, wavelengths, target)
+        super().__init__(self, params, wavelengths, target)
         self.labels = ['d','ff','tline1','tline2','tslab', 'angle']
         self.d, self.ff, self.tline1, self.tline2, self.tslab, self.angle = params
         if self.tline2 > self.tline1:

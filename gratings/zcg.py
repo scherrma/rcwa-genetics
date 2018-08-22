@@ -11,7 +11,7 @@ class ZCG(Grating):
     si_k = interp.interp1d(*zip(*[[nu2lambda(float(f))*10**6,n] for (f, n) in h.opencsv('materials/silicon_k.csv',1)]))
 
     def __init__(self, params, wavelengths, target):
-        Grating.__init__(self, params, wavelengths, target)
+        super().__init__(self, params, wavelengths, target)
         self.d, self.ff, self.tline, self.tslab, self.tstep = params
         self.labels = ['d','ff','tline','tslab','tstep']
         if self.tstep > self.tline:
@@ -45,6 +45,5 @@ class ZCG(Grating):
                 S.SetMaterial('Silicon', complex(self.__class__.si_n(wl), self.__class__.si_k(wl))**2)
                 self.trans.append((wl, float(np.real(S.GetPowerFlux('bottom')[0]))))
             self._calcfom()
-            self.findpeak()
         
         return self.fom
