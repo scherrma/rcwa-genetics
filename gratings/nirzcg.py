@@ -15,7 +15,7 @@ class NIRZCG(Grating):
     sio2_k = interp.interp1d(*zip(*[[float(f)*(10**3), n] for f,n in h.opencsv('materials/silicon_k.csv',1)]))
 
     def __init__(self, params, wavelengths, target = None):
-        super().__init__(self, params, wavelengths, target)
+        super().__init__(params, wavelengths, target)
         self.d, self.ff, self.tline, self.tslab, self.tstep = params
         self.labels = ['d','ff','tline','tslab','tstep']
         if self.tstep > self.tline:

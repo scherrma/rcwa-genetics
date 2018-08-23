@@ -10,7 +10,7 @@ def main():
     tline = 2.8206
     tslab = 1.6668
     tstep = 0.0865
-    wavelengths = (8, 12, 2001)
+    wavelengths = (8, 12, 201)
     target = 9.7
 
     g = ZCG((d, ff, tline, tslab, tstep), wavelengths, target)

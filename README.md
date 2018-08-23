@@ -9,6 +9,8 @@ The generic grating class handles most details shared between the specific grati
 
 __init__ has three arguments: params, wavelengths, and target. params is a tuple of numbers that will describe the grating; the count and order of these values is determined by the specific grating subclass. wavelengths is a numeric triplet: the first wavelength to simulate at, the last wavelength to simulate at, and the total number of wavelengths to simulate. Finally, target is the wavelength that the grating should evaluate performance at (a perfect filter at 11um is not useful if you want to filter at 9um, after all).
 
+setparam lets you lock a parameter in one of three ways (depending on the mode selected). Enter the textual name of the parameter (the one in the labels defined in the specific gratings), a numeric value to lock to, and a mode: '=', '<', or '>'. Mode '=' sets the parameter equal to the value you entered, mode '<' requires that the parameter be less than or equal to the entered value, and mode '>' requires that the parameter be greater than or equal to the entered value.
+
 --
 
 The specific grating classes are subclasses of the generic grating class and describe the unique aspects of the grating. These subclasses usually do three things: finish initialization, define materials, and define the simulation that will generate their transmittance curve.

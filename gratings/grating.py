@@ -55,6 +55,21 @@ class Grating:
                 self.fom *= self.peak[1]**2 * (self.wls[1] - self.wls[0]) / self.linewidth\
                         * exp(-(10*(self.target - self.peak[0]) / (self.wls[1] - self.wls[0]))**2)
 
+    def setparam(self, param, value, mode = "="):
+        lbl_idx = self.labels.index(param)
+        if lbl_idx is None:
+            raise AttributeError(param + " is not a parameter of " + self.__name__)
+        if mode == "=":
+            self.params[lbl_idx] = value
+        elif mode == ">":
+            self.params[lbl_idx] = max(self.params[lbl_idx], value)
+        elif mode == "<":
+            self.params[lbl_idx] = min(self.params[lbl_idx], value)
+        else:
+            raise ValueError(mode + " is not a valid for for " + self.__name__ + ".setparam()")
+        self.__init__(self.params, self.wls, self.target)
+
+
     def mutate(self):
         childparams = [round(gauss(1, 0.1)*p, 4) for p in self.params]
         child = self.__class__(childparams, self.wls, self.target)
