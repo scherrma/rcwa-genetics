@@ -66,7 +66,7 @@ class Grating:
         elif mode == "<":
             self.params[lbl_idx] = min(self.params[lbl_idx], value)
         else:
-            raise ValueError(mode + " is not a valid for for " + self.__name__ + ".setparam()")
+            raise ValueError(mode + " is not a valid mode for " + self.__name__ + ".setparam()")
         self.__init__(self.params, self.wls, self.target)
 
 

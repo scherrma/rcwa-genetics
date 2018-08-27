@@ -15,7 +15,7 @@ def main():
     tline = 2.5
     tslab = 1.5
     tstep = 0.2
-    wavelengths = (8, 12, 2001)
+    wavelengths = (8, 12, 201)
     target = 10.5
 
     thetime = lambda: str(dt.time(dt.now())).split('.')[0]

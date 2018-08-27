@@ -1,5 +1,6 @@
 import S4
-from gratings.grating import Grating
+#from gratings.grating import Grating
+from gratings.adaptivegrating import Grating
 
 import numpy as np
 import scipy.interpolate as interp
