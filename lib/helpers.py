@@ -7,6 +7,6 @@ def opencsv(fname, headerlines=0, footerlines=0):
 def writecsv(fname, data, header=()):
     with open(fname, 'w') as fout:
         if header:
-            fout.write(','.join(map(str, elem)) + '\n')
+            fout.write(','.join(map(str, header)) + '\n')
         for line in data:
             fout.write('\n' + ','.join([(str(elem) if elem != None else '') for elem in line]))

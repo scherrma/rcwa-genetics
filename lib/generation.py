@@ -3,7 +3,7 @@ from numpy.random import choice
 from random import random
 
 class Generation:
-    def __init__(self, size, seed, mutation_rate = 0.1, elite = 1):
+    def __init__(self, size, seed = None, mutation_rate = 0.1, elite = 1):
         self.pop = [seed] + [seed.mutate() for i in range(size - 1)]
         self.elite, self.muta_rate = elite, mutation_rate
         self.best = None
@@ -15,7 +15,7 @@ class Generation:
         for i in range(len(self.pop)):
             self.pop[i].evaluate()
             if progress_txt is not None:
-                print(progress_txt, " ", i, "/", len(self.pop), sep = '', end = '\r')
+                print(progress_txt, " ", i + 1, "/", len(self.pop), sep = '', end = '\r')
         if progress_txt is not None:
             print(progress_txt, ' ' * (2*len(str(len(self.pop))) + 1), end = '\r')
 
@@ -27,7 +27,7 @@ class Generation:
         totalfitness = sum([x.fom for x in self.pop])
         fitnesses = [g.fom/totalfitness for g in self.pop]
 
-        children = deepcopy(self)
+        children = Generation(1, None, self.muta_rate, self.elite)
         children.pop = self.pop[:self.elite]
         for i in range(len(self.pop) - self.elite):
             parents = choice(self.pop, 2, False, fitnesses)

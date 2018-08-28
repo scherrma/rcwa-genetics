@@ -1,28 +1,25 @@
 from lib.generation import Generation
-from gratings.zcg import ZCG
-
 import matplotlib.pyplot as plt
 
-def main():
-    #dimensions
-  #  d = 4.681
-  #  ff = 0.6371
-  #  tline = 2.8206
-  #  tslab = 1.6668
-  #  tstep = 0.0865
-  #  wavelengths = (8, 12, 51)
-    d = 4.838
-    ff = 0.6528
-    tline = 2.682
-    tslab = 1.258
-    tstep = 0.2187
-    wavelengths = (8, 12, 201)
-    target = 10.5
+from gratings.zcg import ZCG
+from gratings.hcg import HCG
+from gratings.blockzcg import BlockZCG
+from gratings.nirzcg import NIRZCG
 
-    g = ZCG((d, ff, tline, tslab, tstep), wavelengths, target)
-    g.adaptiveeval()
+
+def main():
+   #dimensions
+    d = 4.681
+    ff = 0.6371
+    tline = 2.8206
+    tslab = 1.6668
+    tstep = 0.0865
+    wavelengths = (8, 12, 301)
+    target = 9.4
+  
+    g = ZCG((d, ff, tline, tslab, tstep), wavelengths, target, resample = True)
+    g.evaluate()
     print(g)
-    print("RMS transmittance:",(sum([t**2 for (wl, t) in g.trans])/len(g.trans))**(1/2))
     plt.plot(*zip(*g.trans))
     plt.show()
 

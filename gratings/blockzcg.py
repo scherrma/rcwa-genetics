@@ -4,40 +4,31 @@ from gratings.grating import Grating
 import numpy as np
 import scipy.interpolate as interp
 from scipy.constants import speed_of_light
-import lib.helpers as h
+from lib.helpers import opencsv
 
 class BlockZCG(Grating): #2D block ZCG
-    si_n = interp.interp1d(*zip(*[[((speed_of_light*10**6)/float(f)),n] for f,n in h.opencsv('materials/silicon_n.csv',1)]))
-    si_k = interp.interp1d(*zip(*[[((speed_of_light*10**6)/float(f)),n] for f,n in h.opencsv('materials/silicon_k.csv',1)]))
+    si_n = interp.interp1d(*zip(*[[((speed_of_light*10**6)/float(f)),n] for f,n in opencsv('materials/silicon_n.csv',1)]))
+    si_k = interp.interp1d(*zip(*[[((speed_of_light*10**6)/float(f)),n] for f,n in opencsv('materials/silicon_k.csv',1)]))
 
-    def __init__(self, params, wavelengths, target):
+    def __init__(self, params, wavelengths, target = None, resample = False, fbases = 30):
         super().__init__(params, wavelengths, target)
-        self.d, self.ff, self.tblocks, self.tslab = params
+        d, ff, tblocks, tslab = params
         self.labels = ['d','ff','tblocks', 'tslab']
-    
-    def evaluate(self, fbasis = 30):
-        if self.fom is None:
-            S = S4.New(Lattice=((self.d,0), (0, self.d)), NumBasis=fbasis)
+           
+        #create simulation
+        self.sim = S4.New(((d, 0), (0, d)), fbases)
         
-            #materials
-            S.AddMaterial("Vacuum",1)
-            S.AddMaterial("Silicon",1) #edited later by wavelength
+        self.sim.AddMaterial("Vacuum", 1)
+        self.sim.AddMaterial("Silicon", 0) #edited later in setmaterials
 
-            #layers
-            S.AddLayer('top',0,"Vacuum")
-            S.AddLayer('blocks',self.tblocks,"Vacuum")
-            S.AddLayer('slab',self.tslab,"Silicon")
-            S.AddLayer('bottom', 0, "Vacuum")
+        self.sim.AddLayer('top', 0, "Vacuum")
+        self.sim.AddLayer('blocks', tblocks, "Vacuum")
+        self.sim.AddLayer('slab', tslab, "Silicon")
+        self.sim.AddLayer('bottom', 0, "Vacuum")
 
-            #patterning
-            S.SetRegionRectangle('blocks','Silicon',(0,0),0,(self.d*self.ff/2,self.d*self.ff/2))
+        self.sim.SetRegionRectangle('blocks','Silicon',(0,0),0,(d*ff/2, d*ff/2))
 
-            #light
-            S.SetExcitationPlanewave((0,0),0,1)
-            self.trans = []
-            for wl in np.linspace(*self.wls):
-                S.SetFrequency(1/wl)
-                S.SetMaterial('Silicon', complex(self.__class__.si_n(wl), self.__class__.si_k(wl))**2)
-                self.trans.append((wl, float(np.real(S.GetPowerFlux('bottom')[0]))))
-            self._calcfom()
-            self.findpeak()
+        self.sim.SetExcitationPlanewave((0, 0), 0, 1)
+
+    def setmaterials(self, wl):
+        self.sim.SetMaterial('Silicon', complex(self.__class__.si_n(wl), self.__class__.si_k(wl))**2)
